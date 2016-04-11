@@ -2,6 +2,8 @@ from math import sqrt, sin, pi, degrees, radians
 import numpy as np
 import matplotlib.pyplot as plt
 
+Titulo = str(raw_input('Titulo: '))
+
 Xname = str(raw_input('Variable dependiente: '))
 Xmed = str(raw_input('Unidades: '))
 
@@ -43,7 +45,6 @@ else:
 	class Grafica(object):
 
 		#docstring for Grafica#
-		Titulo = str(raw_input('Titulo: '))
 		VX = Mx
 		VY = My
 
@@ -53,10 +54,9 @@ else:
 			fl = open('/home/jaime/Escritorio/Table.ods', 'w')
 			for i in range(Mx.size):
 				fl.write(Xname+'/'+Xmed+ "\t" + Yname+'/'+Ymed + "\n")
-				while w <= Mx.size:
-					fl.write((str(Mx.item(w)) + "\t" + str(My.item(w)) + "\n"))
-					w += 1
-				fl.close()
+				fl.write((str(Mx.item(w)) + "\t" + str(My.item(w)) + "\n"))
+				w += 1
+			fl.close()
 
 		def pendiente(self):
 
@@ -91,7 +91,7 @@ else:
 			plt.show()
 
 		def medianX(self):
-			return float(Mx.sum()) / float(Mx.size)
+			return float(Mx.sum() / float(Mx.size))
 
 		def medianY(self):
 			return float(My.sum()) / float(My.size)
