@@ -48,69 +48,63 @@ if Mx.size != My.size:
 		print 'Sorry U have more measures of %s than %s' %(Yname, Xname)
 
 else:
-	class Graphics(object):
 
-		#docstring for Grafica#
-		VX = Mx
-		VY = My
+	def save():
+		w = 0
+		fl = open('/home/jaime/Escritorio/'+Title+'.ods', 'w')
+		for x in xrange(1):
+			fl.write(Xname+'/'+Xmed+ "\t" + Yname+'/'+Ymed + "\n")
+			for i in range(Mx.size):
+				fl.write((str(Mx.item(w)) + "\t" + str(My.item(w)) + "\n"))
+				w += 1
+			fl.close()
 
-		
-		def save(self):
-			w = 0
-			fl = open('/home/jaime/Escritorio/'+Title+'.ods', 'w')
-			for x in xrange(1):
-				fl.write(Xname+'/'+Xmed+ "\t" + Yname+'/'+Ymed + "\n")
-				for i in range(Mx.size):
-					fl.write((str(Mx.item(w)) + "\t" + str(My.item(w)) + "\n"))
-					w += 1
-				fl.close()
+	def slope():
 
-		def slope(self):
+		x_median = Mx.sum() / Mx.size
+		x_i = Mx - x_median
+		a = x_i * My
+		xx_i = x_i**2
+		m = a.sum() / xx_i.sum()
+		return m
 
-			x_median = Mx.sum() / Mx.size
-			x_i = Mx - x_median
-			a = x_i * My
-			xx_i = x_i**2
-			m = a.sum() / xx_i.sum()
-			return m
+	def intercept():
+		Mxx = Mx**2
+		Mxy = Mx*My
+		qwerty = (My.sum()*Mxx.sum()-Mx.sum()*Mxy.sum()) / (Mx.size*Mxx.sum() - (Mx.sum())**2)
+		return qwerty
 
-		def intercept(self):
-			Mxx = Mx**2
-			Mxy = Mx*My
-			qwerty = (My.sum()*Mxx.sum()-Mx.sum()*Mxy.sum()) / (Mx.size*Mxx.sum() - (Mx.sum())**2)
-			return qwerty
+	def graph():
+		xes = np.arange(Mx.min(),Mx.max(), ((Mx.max()-Mx.min())/100))
+		yes = Graphics().slope()*xes + Graphics().intercept()
 
-		def graph(self):
-			xes = np.arange(Mx.min(),Mx.max(), ((Mx.max()-Mx.min())/100))
-			yes = Graphics().slope()*xes + Graphics().intercept()
+		maxy = My.max() + (My.item(My.size)-My.item(My.size-1))*0.5
+		miny = My.min() - (My.item(1)-My.item(0))*0.5
+		maxx = Mx.max() + (Mx.item(Mx.size)-Mx.item(Mx.size-1))*0.5
+		minx = Mx.min() - (Mx.item(1)-Mx.item(0))*0.5
 
-			maxy = My.max() + (My.item(My.size)-My.item(My.size-1))*0.5
-			miny = My.min() - (My.item(1)-My.item(0))*0.5
-			maxx = Mx.max() + (Mx.item(Mx.size)-Mx.item(Mx.size-1))*0.5
-			minx = Mx.min() - (Mx.item(1)-Mx.item(0))*0.5
+		yerr = float(raw_input("The %s's error " %(Yname)))
 
-			yerr = float(raw_input("The %s's error " %(Yname)))
+		plt.figure(1)
+		plt.errorbar(Mx, My, yerr=yerr, fmt='ro', ecolor='r') 
+		plt.plot(Mx, My, 'ro', xes, yes, 'r')
+		plt.axis([minx, maxx, miny, maxy])
+		plt.title(Title)
+		plt.xlabel(Xname)
+		plt.ylabel(Yname)
+		plt.show()
 
-			plt.figure(1)
-			plt.errorbar(Mx, My, yerr=yerr, fmt='ro', ecolor='r') 
-			plt.plot(Mx, My, 'ro', xes, yes, 'r')
-			plt.axis([minx, maxx, miny, maxy])
-			plt.title(Title)
-			plt.xlabel(Xname)
-			plt.ylabel(Yname)
-			plt.show()
+		f2 = plt.figure(figsize=(12.0, 20.0))
 
-			f2 = plt.figure(figsize=(12.0, 20.0))
+	def medianX():
+		p = np.sum(Mx) / Mx.size
+		return p
 
-		def medianX(self):
-			p = np.sum(Mx) / Mx.size
-			return p
+	def medianY():
+		u = np.sum(My) / My.size
+		return u
 
-		def medianY(self):
-			u = np.sum(My) / My.size
-			return u
-
-Graphics().graph()
-Graphics().save()
-print 'Los valores medios de X y para Y son:' + '\n' + '\t' + ' <x>= %sm y <y>= %ss' %(Graphics().medianX(), Graphics().medianY())
-print 'La ecuación de la recta obtenida por el ajuste por mínimos cuadrados es' + '\n' + '\t' + 'y= (%s) x + (%s)' %(Graphics().slope(), Graphics().intercept()) 
+graph()
+save()
+print 'Los valores medios de X y para Y son:' + '\n' + '\t' + ' <x>= %sm y <y>= %ss' %(medianX(), medianY())
+print 'La ecuación de la recta obtenida por el ajuste por mínimos cuadrados es' + '\n' + '\t' + 'y= (%s) x + (%s)' %(slope(), intercept()) 
