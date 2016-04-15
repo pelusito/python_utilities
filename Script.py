@@ -41,7 +41,11 @@ while booltwo :
 		My = np.insert(My, My.size, float(y))
 
 if Mx.size != My.size:
-	print 'THERE ARE NOT THE SAME NUMBER OF MEASURES OF %s THAN  %s' %(Xname, Yname)
+	
+	if Mx.size >= My.size:
+		print 'Sorry, U have more measures of %s than %s' %(Xname, Yname)
+	else:
+		print 'Sorry U have more measures of %s than %s' %(Yname, Xname)
 
 else:
 	class Graphics(object):
@@ -77,15 +81,20 @@ else:
 			return qwerty
 
 		def graph(self):
-
 			xes = np.arange(Mx.min(),Mx.max(), ((Mx.max()-Mx.min())/100))
-
 			yes = Graphics().slope()*xes + Graphics().intercept()
 
+			maxy = My.max() + (My.item(My.size)-My.item(My.size-1))*0.5
+			miny = My.min() - (My.item(1)-My.item(0))*0.5
+			maxx = Mx.max() + (Mx.item(Mx.size)-Mx.item(Mx.size-1))*0.5
+			minx = Mx.min() - (Mx.item(1)-Mx.item(0))*0.5
+
+			yerr = float(raw_input("The %s's error " %(Yname)))
+
 			plt.figure(1)
-			plt.subplot(211) 
+			plt.errorbar(Mx, My, yerr=yerr, fmt='ro', ecolor='r') 
 			plt.plot(Mx, My, 'ro', xes, yes, 'r')
-			plt.axis([Mx.min(), Mx.max(), My.min(), My.max()])
+			plt.axis([minx, maxx, miny, maxy])
 			plt.title(Title)
 			plt.xlabel(Xname)
 			plt.ylabel(Yname)
