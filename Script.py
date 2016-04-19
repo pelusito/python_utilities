@@ -1,6 +1,7 @@
 """
 	This program has been develop by Jaime Diez Gonzalez-Pardo in 
 	order to facilitate operations in performing laboratory practice
+								Version 1.2
 """
 
 from math import sqrt, sin, pi, degrees, radians
