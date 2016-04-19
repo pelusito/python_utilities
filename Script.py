@@ -1,12 +1,16 @@
 """
 	This program has been develop by Jaime Diez Gonzalez-Pardo in 
 	order to facilitate operations in performing laboratory practice
-								Version 1.2
+
+															Version: 2.0
+		Update: Be able to change data after have introduced it
 """
 
-from math import sqrt, sin, pi, degrees, radians
+from math import exp, sqrt, sin, pi, degrees, radians
 import numpy as np
 import matplotlib.pyplot as plt
+
+c = 3**8
 
 Title = str(raw_input('Title: '))
 
@@ -50,6 +54,31 @@ if Mx.size != My.size:
 
 else:
 
+	def mistake():
+		correct = str(raw_input('R all the measures correct?' + '\n' + 'if it is not please write which one is not correct (x or y)'))
+		while str(correct) != 'ok':
+			if str(correct) == 'x':
+				global Mx
+				print Mx
+				element = float(raw_input('which element is not correct?? '))
+				x = (raw_input('x = '))
+				Mx = np.insert(Mx, element, float(x))
+				Mx = np.delete(Mx, element-1)
+			elif str(correct) == 'y':
+				global My
+				print My
+				element = float(raw_input('which element is not correct??'))
+				y = (raw_input('y = '))
+				My = np.insert(My, element, float(y))
+				My = np.delete(My, element-1)
+			else :
+				print 'sorry I can not understand U'
+			correct = raw_input('R all the measures correct?' + '\n' + 'if it is not please write which one is not correct (x or y)')
+
+	def frequencyWavelength():
+		global Mx
+		Mx = c / Mx
+
 	def save():
 		w = 0
 		fl = open('/home/jaime/Escritorio/'+Title+'.ods', 'w')
@@ -77,12 +106,19 @@ else:
 
 	def graph():
 		xes = np.arange(Mx.min(),Mx.max(), ((Mx.max()-Mx.min())/100))
-		yes = Graphics().slope()*xes + Graphics().intercept()
+		yes = slope()*xes + intercept()
 
-		maxy = My.max() + (My.item(My.size)-My.item(My.size-1))*0.5
-		miny = My.min() - (My.item(1)-My.item(0))*0.5
-		maxx = Mx.max() + (Mx.item(Mx.size)-Mx.item(Mx.size-1))*0.5
-		minx = Mx.min() - (Mx.item(1)-Mx.item(0))*0.5
+		if slope()<0:
+			maxy = My.max() + (My.item(My.size-1)-My.item(My.size-2))*0.5
+			miny = My.min() + (My.item(1)-My.item(0))*0.5
+			maxx = Mx.max() + (Mx.item(Mx.size-1)-Mx.item(Mx.size-2))*0.5
+			minx = Mx.min() - (Mx.item(1)-Mx.item(0))*0.5
+		else:
+			maxy = My.max() + (My.item(My.size-1)-My.item(My.size-2))*0.5
+			miny = My.min() - (My.item(1)-My.item(0))*0.5
+			maxx = Mx.max() + (Mx.item(Mx.size-1)-Mx.item(Mx.size-2))*0.5
+			minx = Mx.min() - (Mx.item(1)-Mx.item(0))*0.5
+
 
 		yerr = float(raw_input("The %s's error " %(Yname)))
 
@@ -105,7 +141,10 @@ else:
 		u = np.sum(My) / My.size
 		return u
 
+	def printer():
+		print 'Los valores medios de X y de Y son:' + "\n" + "\t" + ' <x>= %sm y <y>= %ss' %(medianX(), medianY())
+		print 'La ecuacion de la recta obtenida por el ajuste por minimos cuadrados es: y = %sx + %s' %(slope(), intercept())
+
 graph()
 save()
-print 'Los valores medios de X y para Y son:' + '\n' + '\t' + ' <x>= %sm y <y>= %ss' %(medianX(), medianY())
-print 'La ecuación de la recta obtenida por el ajuste por mínimos cuadrados es' + '\n' + '\t' + 'y= (%s) x + (%s)' %(slope(), intercept()) 
+
