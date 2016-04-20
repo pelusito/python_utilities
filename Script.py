@@ -5,10 +5,9 @@
 															Version: 2.0
 		Update: Be able to change data after have introduced it
 """
-
-from math import exp, sqrt, sin, pi, degrees, radians
-import numpy as np
-import matplotlib.pyplot as plt
+from math import fabs
+import numpy as np # import numpy package
+import matplotlib.pyplot as plt # import matplotlib.pyplot package
 
 c = 3**8
 
@@ -45,106 +44,119 @@ while booltwo :
 		booltwo = True
 		My = np.insert(My, My.size, float(y))
 
-if Mx.size != My.size:
+while Mx.size != My.size:
 	
 	if Mx.size >= My.size:
 		print 'Sorry, U have more measures of %s than %s' %(Xname, Yname)
+		mistake()
 	else:
 		print 'Sorry U have more measures of %s than %s' %(Yname, Xname)
+		mistake()
 
-else:
 
-	def mistake():
-		correct = str(raw_input('R all the measures correct?' + '\n' + 'if it is not please write which one is not correct (x or y)'))
-		while str(correct) != 'ok':
-			if str(correct) == 'x':
-				global Mx
-				print Mx
-				element = float(raw_input('which element is not correct?? '))
-				x = (raw_input('x = '))
+
+def mistake():
+	global My, Mx
+	correct = str(raw_input('R all the measures correct?' + '\n' + 'if it is not please write which one is not correct (x or y)'))
+	while str(correct) != 'ok':
+		if str(correct) == 'x':
+			print Mx
+			action = str(raw_input('Choose action: '))
+			element = float(raw_input('which element do U want to' + action + ' ?? '))
+			if action == 'delete':
+				Mx = Mx.delete(My, element)
+			elif action == 'add':
+				y = (raw_input('y = '))
+				Mx = np.insert(Mx, element, float(x))
+			elif action == 'change':
+				y = (raw_input('y = '))
 				Mx = np.insert(Mx, element, float(x))
 				Mx = np.delete(Mx, element-1)
-			elif str(correct) == 'y':
-				global My
-				print My
-				element = float(raw_input('which element is not correct??'))
+		elif str(correct) == 'y':
+			print My
+			action = str(raw_input('Choose action: '))
+			element = float(raw_input('which element is not correct??'))
+			if action == 'delete':
+				My = np.delete(My, element)
+			elif action == 'add':
+				y = (raw_input('y = '))
+				My = np.insert(My, element, float(y))
+			elif action == 'change':
 				y = (raw_input('y = '))
 				My = np.insert(My, element, float(y))
 				My = np.delete(My, element-1)
-			else :
-				print 'sorry I can not understand U'
-			correct = raw_input('R all the measures correct?' + '\n' + 'if it is not please write which one is not correct (x or y)')
+		else :
+			print 'sorry I can not understand U'
+		correct = raw_input('R all the measures correct?' + '\n' + 'if it is not please write which one is not correct (x or y)')
 
-	def frequencyWavelength():
-		global Mx
-		Mx = c / Mx
+def orderMagnitude(w):
+	global Mx, My
+	array = (raw_input('In which data? '))
+	if str(array) == 'Mx':
+		Mx = Mx *(10**(w))
+	elif str(array) == 'My':
+		 My = My *(10**(w))
 
-	def save():
-		w = 0
-		fl = open('/home/jaime/Escritorio/'+Title+'.ods', 'w')
-		for x in xrange(1):
-			fl.write(Xname+'/'+Xmed+ "\t" + Yname+'/'+Ymed + "\n")
-			for i in range(Mx.size):
-				fl.write((str(Mx.item(w)) + "\t" + str(My.item(w)) + "\n"))
-				w += 1
-			fl.close()
+def frequencyWavelength():
+	global Mx
+	Mx = Mx *(10**(-9))
+	Mx = c / Mx
 
-	def slope():
+def save():
+	w = 0
+	fl = open('/home/jaime/Escritorio/'+Title+'.ods', 'w')
+	for x in xrange(1):
+		fl.write(Xname+'/'+Xmed+ "\t" + Yname+'/'+Ymed + "\n")
+		for i in range(Mx.size):
+			fl.write((str(Mx.item(w)) + "\t" + str(My.item(w)) + "\n"))
+			w += 1
+		fl.close()
 
-		x_median = Mx.sum() / Mx.size
-		x_i = Mx - x_median
-		a = x_i * My
-		xx_i = x_i**2
-		m = a.sum() / xx_i.sum()
-		return m
+def slope():
 
-	def intercept():
-		Mxx = Mx**2
-		Mxy = Mx*My
-		qwerty = (My.sum()*Mxx.sum()-Mx.sum()*Mxy.sum()) / (Mx.size*Mxx.sum() - (Mx.sum())**2)
-		return qwerty
+	x_median = Mx.sum() / Mx.size
+	x_i = Mx - x_median
+	a = x_i * My
+	xx_i = x_i**2
+	m = a.sum() / xx_i.sum()
+	return m
 
-	def graph():
-		xes = np.arange(Mx.min(),Mx.max(), ((Mx.max()-Mx.min())/100))
-		yes = slope()*xes + intercept()
+def intercept():
+	Mxx = Mx**2
+	Mxy = Mx*My
+	qwerty = (My.sum()*Mxx.sum()-Mx.sum()*Mxy.sum()) / (Mx.size*Mxx.sum() - (Mx.sum())**2)
+	return qwerty
 
-		if slope()<0:
-			maxy = My.max() + (My.item(My.size-1)-My.item(My.size-2))*0.5
-			miny = My.min() + (My.item(1)-My.item(0))*0.5
-			maxx = Mx.max() + (Mx.item(Mx.size-1)-Mx.item(Mx.size-2))*0.5
-			minx = Mx.min() - (Mx.item(1)-Mx.item(0))*0.5
-		else:
-			maxy = My.max() + (My.item(My.size-1)-My.item(My.size-2))*0.5
-			miny = My.min() - (My.item(1)-My.item(0))*0.5
-			maxx = Mx.max() + (Mx.item(Mx.size-1)-Mx.item(Mx.size-2))*0.5
-			minx = Mx.min() - (Mx.item(1)-Mx.item(0))*0.5
+def graph():
+	xes = np.arange(Mx.min(),Mx.max(), ((Mx.max()-Mx.min())/100))
+	yes = slope()*xes + intercept()
 
+	maxy = My.max() + fabs(My.item(My.size-1)-My.item(My.size-2))*0.5
+	miny = My.min() + fabs(My.item(1)-My.item(0))*0.5
+	maxx = Mx.max() + fabs(Mx.item(Mx.size-1)-Mx.item(Mx.size-2))*0.5
+	minx = Mx.min() - fabs(Mx.item(1)-Mx.item(0))*0.5
 
-		yerr = float(raw_input("The %s's error " %(Yname)))
+	yerr = float(raw_input("The %s's error " %(Yname)))
 
-		plt.figure(1)
-		plt.errorbar(Mx, My, yerr=yerr, fmt='ro', ecolor='r') 
-		plt.plot(Mx, My, 'ro', xes, yes, 'r')
-		plt.axis([minx, maxx, miny, maxy])
-		plt.title(Title)
-		plt.xlabel(Xname)
-		plt.ylabel(Yname)
-		plt.show()
+	plt.figure(1)
+	plt.errorbar(Mx, My, yerr=yerr, fmt='ro', ecolor='r') 
+	plt.plot(Mx, My, 'ro', xes, yes, 'r')
+	plt.axis([minx, maxx, miny, maxy])
+	plt.title(Title)
+	plt.xlabel(Xname)
+	plt.ylabel(Yname)
+	plt.show()
 
-		f2 = plt.figure(figsize=(12.0, 20.0))
+	f2 = plt.figure(figsize=(12.0, 20.0))
 
-	def medianX():
-		p = np.sum(Mx) / Mx.size
-		return p
+def medianX():
+	p = np.sum(Mx) / Mx.size
+	return p
 
-	def medianY():
-		u = np.sum(My) / My.size
-		return u
+def medianY():
+	u = np.sum(My) / My.size
+	return u
 
-	def printer():
-		print 'Los valores medios de X y de Y son:' + "\n" + "\t" + ' <x>= %sm y <y>= %ss' %(medianX(), medianY())
-		print 'La ecuacion de la recta obtenida por el ajuste por minimos cuadrados es: y = %sx + %s' %(slope(), intercept())
-
-graph()
-save()
-
+def printer():
+	print 'Los valores medios de X y de Y son:' + "\n" + "\t" + ' <x>= %sm y <y>= %ss' %(medianX(), medianY())
+	print 'La ecuacion de la recta obtenida por el ajuste por minimos cuadrados es:' + '\n' + '\t' + 'y = %sx + %s' %(slope(), intercept())
