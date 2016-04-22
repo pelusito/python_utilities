@@ -1,6 +1,6 @@
 clear
 
-python ./*/ScryptListas.py
+python ./*/ScriptListas.py
 
 cat ./*.csv 
 
