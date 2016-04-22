@@ -6,7 +6,8 @@
 		Update: Be able to change data after have introduced it
 """
 
-from math import fabs, sqrt # import absolute function from math package
+from math import fabs, sqrt # import absolute and square root function from math package
+import os # import os Miscellaneous operating system interfaces
 import numpy as np # import numpy package
 import matplotlib.pyplot as plt # import matplotlib.pyplot package
  
@@ -46,8 +47,6 @@ def mistake(): # add, delete or change an element from lists
 			print 'sorry I can not understand U' # error problem
 		correct = raw_input('R all the measures correct?' + '\n' + 'if it is not please write which one is not correct (x or y) ') # return the loop
 
-	# 
-
 def orderMagnitude(w): # change the order of magnitude to w
 	global Mx, My # let use Mx and My variables
 	lists = (raw_input('In which data? ')) # choose list
@@ -61,19 +60,40 @@ def orderMagnitude(w): # change the order of magnitude to w
 def frequencyWavelength(): # convert frequency to wavelength or vice versa
 	global Mx # let use Mx variable
 	c = 3*(10**8) # set light speed
+	newMx = [] # new list with DV data
 	for i in xrange(len(Mx)): # loop that go over element by element the DV list
-		Mx[i] = c / Mx[i] # Convert each element to frequency or wavelength
+		newMx.append(Mx[i])
+	if Xmed == 'nm':
+		newXname = 'Frequency/Hz'
+		for i in xrange(len(Mx)): # loop that go over element by element the DV list
+			Mx[i] = Mx[i] *(10**(-9)) # multiply each element by 10 to -9
+		for i in xrange(len(Mx)): # loop that go over element by element the DV list
+			Mx[i] = c / Mx[i] # Convert each element to frequency
+		fl = open(Path+Title+'.ods', 'w') # open and create an .ods file
+		for x in xrange(1): # loop to write the file
+			fl.write(Xname+'/'+Xmed+ "\t" + newXname + '\t' + Yname+'/'+Ymed + "\n") # write a header
+			for i in range(len(Mx)): # loop to write element by element to the file
+				fl.write((str(Mx[i]) + "\t" + str(newMx[i]) + '\t' + str(My[i]) + "\n")) # write in two colums
+			fl.write('\n' + 'Slope' + '\t'+ str(slope()) + '\n')
+			fl.write('intercept' + '\t' + str(intercept()) + '\n')
+			fl.close() # close file
+	else:
+		newname = 'Wave Length/nm'
+		for i in xrange(len(Mx)): # loop that go over element by element the DV list
+			Mx[i] = c / Mx[i] # Convert each element to frequency or wavelength
+		fl = open(Path+Title+'.ods', 'w') # open and create an .ods file
+		for x in xrange(1): # loop to write the file
+			fl.write(Xname+'/'+Xmed+ "\t" + newname + '\t' + Yname+'/'+Ymed + "\n") # write a header
+			for i in range(len(Mx)): # loop to write element by element to the file
+				fl.write((str(Mx[i]) + "\t" + str(My[i]) + "\n")) # write in two colums
+			fl.close() # close file
 
 def save(): # save lists into a .ods archive in /home/jaime/Documentos/Data/ path
-	w = 0 # inicialize the element of the list
-	fl = open('/home/jaime/Documentos/Data/'+Title+'.csv', 'w') # open and create an .ods file
+	fl = open(Path+Title+'.ods', 'w') # open and create an .ods file
 	for x in xrange(1): # loop to write the file
 		fl.write(Xname+'/'+Xmed+ "\t" + Yname+'/'+Ymed + "\n") # write a header
 		for i in range(len(Mx)): # loop to write element by element to the file
-			fl.write((str(Mx[w]) + "\t" + str(My[w]) + "\n")) # write in two colums
-			w += 1 # next element
-		fl.write('\n' + 'Slope' + '\t'+ str(slope()) + '\n')
-		fl.write('intercept' + '\t' + str(intercept()) + '\n')
+			fl.write((str(Mx[i]) + "\t" + str(My[i]) + "\n")) # write in two colums
 		fl.close() # close file
 
 def slope(): # Calculate the slope of a linear graph (IV to DV)
@@ -106,18 +126,25 @@ def graph(): # print the graph
 	yerr = float(raw_input("The %s's error " %(Yname))) # error for IV
 
 	# Represent the graphic
-	plt.figure(1)
+	fig = plt.figure()
 	plt.errorbar(Mx, My, yerr=yerr, fmt='ro', ecolor='r') 
 	plt.plot(Mx, My, 'ro', xes, yes, 'r')
 	plt.axis([minx, maxx, miny, maxy])
 	plt.title(Title)
-	plt.xlabel(Xname)
-	plt.ylabel(Yname)
+	plt.xlabel(Xname+'/'+Xmed)
+	plt.ylabel(Yname+'/'+Ymed)
+	fig.savefig(Path+Title+'.png')
 	plt.show()
 
 	f2 = plt.figure(figsize=(12.0, 20.0))
 
 def printer(): # Print means and the graph equation 
+	fl = open(Path+Title+'.txt','w')
+	for x in xrange(1):
+		fl.write('Los valores medios de X y de Y son:' + "\n")
+		fl.write('\t' + ' <x>= ' + str(medianX()) + 'm y <y>= ' + str(medianY()) + 's'+'\n')
+		fl.write('La ecuacion de la recta obtenida por el ajuste por minimos cuadrados es:' + '\n')
+		fl.write('\t' + 'y = ' + str(slope()) + 'x + ' + str(intercept()) + '\n')
 	print 'Los valores medios de X y de Y son:' + "\n" + "\t" + ' <x>= %sm y <y>= %ss' %(medianX(), medianY())
 	print 'La ecuacion de la recta obtenida por el ajuste por minimos cuadrados es:' + '\n' + '\t' + 'y = %sx + %s' %(slope(), intercept())
 
@@ -141,6 +168,11 @@ def medianY(): # return the mean of IV
 	return sum(My) / len(My)
 
 Title = str(raw_input('Title: ')) # Introduce the title of the practice
+Path = './Escritorio/Python/'+Title+'/'
+dir = os.path.dirname(Path)
+if not os.path.exists(Path):
+	os.makedirs(Path)
+
 
 Xname = str(raw_input('Dependent variable: ')) # Dependent variable's name (DV)
 Xmed = str(raw_input('Units: ')) # units of the DV
@@ -158,7 +190,6 @@ while boolone : # loop to insert data
 		boolone = True # continue with the loop
 		Mx.append(float(x)) # append a new element to the list
 		samplex += 1 # plus another sample
-
 
 Yname = str(raw_input('independent variable: ')) # IV's name
 Ymed = str(raw_input('Units: ')) # units of the independent variable(IV)
@@ -214,6 +245,9 @@ while function != 'close': # loop to select function. if the function es close, 
 	
 	function = str(raw_input('Choose function: ')) # ask again for a function
 
-
-
-
+fl = open('./1.csv', 'w') # open and create an .ods file
+for x in xrange(1): # loop to write the file
+	fl.write(Xname+'/'+Xmed+ "\t" + Yname+'/'+Ymed + "\n") # write a header
+	for i in range(len(Mx)): # loop to write element by element to the file
+		fl.write((str(Mx[i]) + "\t" + str(My[i]) + "\n")) # write in two colums
+	fl.close() # close file
