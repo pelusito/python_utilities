@@ -2,7 +2,7 @@
 	This program has been develop by Jaime Diez Gonzalez-Pardo in 
 	order to facilitate operations in performing laboratory practice
 
-															Version: 2.0
+									Version: 2.0
 		Update: Be able to change data after have introduced it
 """
 from math import fabs
