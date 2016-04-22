@@ -2,64 +2,65 @@
 	This program has been develop by Jaime Diez Gonzalez-Pardo in 
 	order to facilitate operations in performing laboratory practice
 
-									Version: 2.0
+															Version: 2.0
 		Update: Be able to change data after have introduced it
 """
-from math import fabs
+from math import fabs # import absolute function from math package
 import numpy as np # import numpy package
 import matplotlib.pyplot as plt # import matplotlib.pyplot package
 
-c = 3**8
+Title = str(raw_input('Title: ')) # Introduce the title of the practice
 
-Title = str(raw_input('Title: '))
+Xname = str(raw_input('Dependent variable: ')) # Dependent variable's name
+Xmed = str(raw_input('Units: ')) # units of the dependent variable
 
-Xname = str(raw_input('Dependent variable: '))
-Xmed = str(raw_input('Units: '))
+Mx = np.array([]) # inicialize the array of data
+boolone = True # inicialize the boolean used into the while
+samplex = 1 # inicialize the number of samples of DV
 
-Mx = np.array([])
-
-boolone = True
-
-while boolone :
-	x = (raw_input('x = '))
-	if str(x) == 'End' or str(x) == 'end' or str(x) == 'Fin' or str(x) == 'fin':
-		boolone = False
+while boolone : # loop to insert data 
+	x = (raw_input('%s x = ' %(samplex))) # introduce a new value
+	if str(x) == 'End' or str(x) == 'end' or str(x) == 'Fin' or str(x) == 'fin': # if the new value is 'end', stop the loop
+		boolone = False # stop the loop 
 	else:
-		boolone = True
-		Mx = np.insert(Mx, Mx.size, float(x))
+		boolone = True # continue with the loop
+		Mx = np.insert(Mx, Mx.size, float(x)) # append a new element to the array
+		samplex += 1 # plus another sample
 
 
-Yname = str(raw_input('independent variable: '))
-Ymed = str(raw_input('Units: '))
+Yname = str(raw_input('independent variable: ')) # IV's name
+Ymed = str(raw_input('Units: ')) # units of the independent variable(IV)
 
-My = np.array([])
+My = np.array([]) # inicialize the data array of IV
+booltwo = True # inicialize the boolean used into the while
+sampley = 1 # inicialize the number of samples of IV
 
-booltwo = True 
+while booltwo : # loop to insert data
+	y = (raw_input('%s y = ' %(sampley))) # introduce a new value
 
-while booltwo :
-	y = (raw_input('y = '))
-	if str(y) == 'End' or str(y) == 'end' or str(y) == 'Fin' or str(y) == 'fin':
-		booltwo = False
+	if str(y) == 'End' or str(y) == 'end' or str(y) == 'Fin' or str(y) == 'fin': # if the new value is 'end', stop the loop
+		booltwo = False # stop the loop 
 	else:
-		booltwo = True
-		My = np.insert(My, My.size, float(y))
+		booltwo = True # continue with the loop
+		My = np.insert(My, My.size, float(y)) # append a new element to the array
+		sampley += 1 # plus another sample
 
-while Mx.size != My.size:
+while Mx.size != My.size: # check if there r the same number of data in DV's array than in IV's one
 	
-	if Mx.size >= My.size:
+	if Mx.size >= My.size: # More data from DV
 		print 'Sorry, U have more measures of %s than %s' %(Xname, Yname)
-		mistake()
-	else:
+		mistake() # ejecute mistake function
+	else: # More data from IV
 		print 'Sorry U have more measures of %s than %s' %(Yname, Xname)
-		mistake()
+		mistake() # ejecute mistake function
 
 
 
-def mistake():
-	global My, Mx
-	correct = str(raw_input('R all the measures correct?' + '\n' + 'if it is not please write which one is not correct (x or y)'))
-	while str(correct) != 'ok':
-		if str(correct) == 'x':
+def mistake(): # add, delete or change an element from arrays
+	global My, Mx # let use Mx and My variables
+	correct = str(raw_input('R all the measures correct?' + '\n' + 'if it is not please write which one is not correct (x or y)')) # choose array
+	while str(correct) != 'ok': # loop ejecute mistake while correct is not equal 'ok'
+		if str(correct) == 'x': # choose DV's list
 			print Mx
 			action = str(raw_input('Choose action: '))
 			element = float(raw_input('which element do U want to' + action + ' ?? '))
@@ -99,6 +100,7 @@ def orderMagnitude(w):
 
 def frequencyWavelength():
 	global Mx
+	c = 3*(10**8)
 	Mx = Mx *(10**(-9))
 	Mx = c / Mx
 
