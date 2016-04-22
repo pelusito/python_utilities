@@ -2,8 +2,10 @@ clear
 
 python ./*/ScryptListas.py
 
-cat ./Documentos/Data/*.csv 
+cat ./*.csv 
 
-sleep 10
+rm ./*.csv
+
+sleep 5
 
 clear
