@@ -1,12 +1,31 @@
 """
-	This program has been develop by Jaime Diez Gonzalez-Pardo in 
+	This program has been develop by Jaime Diez Gonzalez-Pardo in Python in 
 	order to facilitate operations in performing laboratory practice
 
-															Version: 2.0
-		Update: Be able to change data after have introduced it
+													Version: 2.0
+
+		Update: 
+			* It has been implemented the use of lists instead of arrays for data management
+			improving program performance
+
+			* Improve the algorithm of orderMagnitude() and frequencyWavelength()'s functions 
+
+			* Solved the problem of the edges of the graph window and implemented the error bars 
+
+			* Added a logarithmic expression for the graph using an algorithm
+
+			* Save the printer() function into a txt archive
+
+			* Added a fuction which calculated the slope and intercept errors
+
+			* Create a directory in which save all the documents (table, graph, txt)
+
+			* Implement an algorithm to be able to choose the function
+
+			* Create an csv archive as a table with  tha data in order to show on the terminal (See ScriptListas.sh code)
 """
 
-from math import fabs, sqrt # import absolute and square root function from math package
+from math import fabs, sqrt, log # import absolute and square root function from math package
 import os # import os Miscellaneous operating system interfaces
 import numpy as np # import numpy package
 import matplotlib.pyplot as plt # import matplotlib.pyplot package
@@ -138,6 +157,51 @@ def graph(): # print the graph
 
 	f2 = plt.figure(figsize=(12.0, 20.0))
 
+def graphlog(): # print a logaritmic function
+	xes = np.arange(min(Mx),max(Mx), float((max(Mx)-min(Mx))/100)) # create an array to represent the curve graphic on X axis
+	yes = [] # inicialize a list to represent the curve graphic on Y axis
+
+		# inicialize necessary variables to calculate the curve
+	sumX = sum(Mx) 
+	sumY= sum(My)
+	sumLnX = 0
+	sumLn2X = 0 
+	sumLnXY = 0
+	sumY2 = 0
+
+
+	for i in xrange(len(Mx)):
+		sumLnX += log(Mx[i])
+		sumLn2X += log(Mx[i])*log(Mx[i])
+		sumLnXY += log(Mx[i])*My[i]
+		sumY2 += My[i]*My[i]
+
+	a = (sumLnXY- sumY*sumLnX/len(Mx))/(sumLn2X - sumLnX*sumLnX/len(Mx))
+	b = sumY/len(Mx) - a*sumLnX/len(Mx)
+    
+	for x in xrange(xes.size()):
+		yes.append(a*log(xes[x])+b)
+
+	maxy = max(My) + fabs(My[len(My)-1]-My[len(My)-2])*0.5 # Max value for y axis 
+	miny = min(My) - fabs(My[1]-My[0])*0.5 # Min value for y axis
+	maxx = max(Mx) + fabs(Mx[len(Mx)-1]-Mx[len(Mx)-2])*0.5 # max value for x axis
+	minx = min(Mx) - fabs(Mx[1]-Mx[0])*0.5 # min value for x axis
+
+	yerr = float(raw_input("The %s's error " %(Yname))) # error for IV
+
+	# Represent the graphic
+	fig = plt.figure()
+	plt.errorbar(Mx, My, yerr=yerr, fmt='ro', ecolor='r') 
+	plt.plot(Mx, My, 'ro', xes, yes, 'r')
+	plt.axis([minx, maxx, miny, maxy])
+	plt.title(Title)
+	plt.xlabel(Xname+'/'+Xmed)
+	plt.ylabel(Yname+'/'+Ymed)
+	fig.savefig(Path+Title+'.png')
+	plt.show()
+
+	f2 = plt.figure(figsize=(12.0, 20.0))
+
 def printer(): # Print means and the graph equation 
 	fl = open(Path+Title+'.txt','w')
 	for x in xrange(1):
@@ -172,7 +236,6 @@ Path = './Escritorio/Python/'+Title+'/'
 dir = os.path.dirname(Path)
 if not os.path.exists(Path):
 	os.makedirs(Path)
-
 
 Xname = str(raw_input('Dependent variable: ')) # Dependent variable's name (DV)
 Xmed = str(raw_input('Units: ')) # units of the DV
@@ -217,7 +280,7 @@ while len(Mx) != len(My): # check if there r the same number of data in DV's lis
 		print 'Sorry U have more measures of %s than %s' %(Yname, Xname)
 		mistake() # ejecute mistake function
 
-print 'Mistake'+' | '+'Order of Magnitude'+' | '+'Frequency to Wavelength'+' | '+'Save'+' | '+'Graph'+' | '+'Printer'+' | '+'Errors'+'\n' # print functions available
+print 'Mistake'+' | '+'Order of Magnitude'+' | '+'Frequency to Wavelength'+' | '+'Save'+' | '+'Linear Graph'+' | '+'Printer'+' | '+'Errors'+' | '+'Logaritmic Graph'+'\n' # print functions available
 
 function = str(raw_input('Choose function: ')) # select one function
 
@@ -234,12 +297,14 @@ while function != 'close': # loop to select function. if the function es close, 
 		frequencyWavelength() # ejecute frequencyWavelength() function
 	elif function == 'Save' or function == 'save':
 		save() # ejecute save()function
-	elif function == 'Graph' or function == 'graph':
+	elif function == 'Linear Graph' or function == 'Linear graph' or function == 'linear graph':
 		graph() # ejecute graph() function
 	elif function == 'Printer' or function == 'printer':
 		printer() # ejecute printer() function
 	elif function == 'Errors':
 		errors() # ejecute errors() function
+	elif function == 'logaritmic graph' or function == 'Logaritmic Graph' or function == 'Logaritmic graph':
+		graphlog() # ejecute graphlog() function
 	else:
 		print 'sorry I can not understand U'+'\n' # print a message
 	
