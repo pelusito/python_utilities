@@ -1,11 +1,15 @@
-clear
+##############################################################
+####     SHELL SCRIPT used to ejecute ScrpitLista.py     #####
+##############################################################
 
-python ./*/ScriptListas.py
+clear # clear the terminal window
 
-cat ./*.csv 
+python ./*/ScriptListas.py # ejecute the python program
 
-rm ./*.csv
+cat ./*.csv  # before close python program show in terminal the csv archive created 
 
-sleep 5
+rm ./*.csv # delete the csv archive
 
-clear
+sleep 5 # wait 5 seconds in order to be able to see the table
+
+clear # clear the window
