@@ -24,13 +24,14 @@
 
 			* Implement an algorithm to be able to choose the function
 
-			* Create an csv archive as a table with  tha data in order to show on the terminal (See ScriptListas.sh code)
 """
 
 from math import fabs, sqrt, log, exp # import absolute and square root function from math package
 import os # import os Miscellaneous operating system interfaces
 import numpy as np # import numpy package
 import matplotlib.pyplot as plt # import matplotlib.pyplot package
+
+os.system('cls' if os.name == 'nt' else 'clear')
 
 ###########################################################
 def mistake(): # add, delete or change an element from lists
@@ -93,9 +94,9 @@ def frequencyWavelength(): # convert frequency to wavelength or vice versa
 			Mx[i] = c / Mx[i] # Convert each element to frequency
 		fl = open(Path+Title+'.ods', 'w') # open and create an .ods file
 		for x in xrange(1): # loop to write the file
-			fl.write(Xname+'/'+newXmed+ "\t" + Xname + '\t' + Yname+'/'+Ymed + "\n") # write a header
+			fl.write(newXname+ "\t" + Xname+'/'+ Xmed + '\t' + Yname+'/'+Ymed + "\n") # write a header
 			for i in range(len(Mx)): # loop to write element by element to the file
-				fl.write((str(Mx[i]) + "\t" + str(newMx[i]) + '\t' + str(My[i]) + "\n")) # write in two colums
+				fl.write(('%g' %(Mx[i]) + "\t" + '%g' %(newMx[i]) + '\t' + '%g' %(My[i]) + "\n")) # write in two colums
 			fl.close() # close file
 	else:
 		newname = 'Wave Length/nm'
@@ -103,9 +104,9 @@ def frequencyWavelength(): # convert frequency to wavelength or vice versa
 			Mx[i] = c / Mx[i] # Convert each element to frequency or wavelength
 		fl = open(Path+Title+'.ods', 'w') # open and create an .ods file
 		for x in xrange(1): # loop to write the file
-			fl.write(Xname+'/'+Xmed+ "\t" + newname + '\t' + Yname+'/'+Ymed + "\n") # write a header
+			fl.write(newname+ "\t" + Xname+'/'+ Xmed + '\t' + Yname+'/'+Ymed + "\n") # write a header
 			for i in range(len(Mx)): # loop to write element by element to the file
-				fl.write((str(Mx[i]) + "\t" + str(My[i]) + "\n")) # write in two colums
+				fl.write(('%g' %(Mx[i]) + "\t" + '%g' %(newMx[i])+ '\t' + '%g' %(My[i]) + "\n")) # write in two colums
 			fl.close() # close file
 
 def save(): # save lists into a .ods archive in /home/jaime/Documentos/Data/ path
@@ -113,14 +114,25 @@ def save(): # save lists into a .ods archive in /home/jaime/Documentos/Data/ pat
 	for x in xrange(1): # loop to write the file
 		fl.write(Xname+'/'+Xmed+ "\t" + Yname+'/'+Ymed + "\n") # write a header
 		for i in range(len(Mx)): # loop to write element by element to the file
-			fl.write((str(Mx[i]) + "\t" + str(My[i]) + "\n")) # write in two colums
+			fl.write('%g' %(Mx[i]) + "\t" + '%g' %(My[i])+ "\n") # write in two colums
 		fl.close() # close file
 
 def graph(): # print the graph
-	maxy = max(My) + fabs(My[len(My)-1]-My[len(My)-2])*0.5 # Max value for y axis 
-	miny = min(My) - fabs(My[1]-My[0])*0.5 # Min value for y axis
-	maxx = max(Mx) + fabs(Mx[len(Mx)-1]-Mx[len(Mx)-2])*0.5 # max value for x axis
-	minx = min(Mx) - fabs(Mx[1]-Mx[0])*0.5 # min value for x axis
+	i = 1
+	intervalY = My[i]-My[i-1]
+	while intervalY == 0:
+		i += 1
+		intervalY = My[i]-My[i-1]
+	i = 1
+	intervalX = My[i]-My[i-1]
+	while intervalX == 0:
+		i += 1
+		intervalX = My[i]-My[i-1]
+
+	maxy = max(My) + fabs(intervalY)*0.5 # Max value for y axis 
+	miny = min(My) - fabs(intervalY)*0.5 # Min value for y axis
+	maxx = max(Mx) + fabs(intervalX)*0.5 # max value for x axis
+	minx = min(Mx) - fabs(intervalX)*0.5 # min value for x axis
 
 	# Represent the graphic
 	plt.figure(1)
@@ -138,6 +150,7 @@ def medianX(): # return the mean of DV
 def medianY(): # return the mean of IV
 	return sum(My) / len(My)
 
+####################################################################################
 
 Title = str(raw_input('Title: ')) # Introduce the title of the practice
 Path = './Escritorio/Python/'+Title+'/'
@@ -228,10 +241,22 @@ class Straigth(object):
 		xes = np.arange(min(Mx),max(Mx), ((max(Mx)-min(Mx))/100)) # create an array to represent the straight graphic on X axis
 		yes = Straigth().slope()*xes + Straigth().intercept() # create a list to represent the straght graphic on Y axis
 
-		maxy = max(My) + fabs(My[len(My)-1]-My[len(My)-2])*0.5 # Max value for y axis 
-		miny = min(My) - fabs(My[1]-My[0])*0.5 # Min value for y axis
-		maxx = max(Mx) + fabs(Mx[len(Mx)-1]-Mx[len(Mx)-2])*0.5 # max value for x axis
-		minx = min(Mx) - fabs(Mx[1]-Mx[0])*0.5 # min value for x axis
+		i = 1
+		intervalY = My[i]-My[i-1]
+		while intervalY == 0:
+			i += 1
+			intervalY = My[i]-My[i-1]
+		i = 1
+		intervalX = My[i]-My[i-1]
+		while intervalX == 0:
+			i += 1
+			intervalX = My[i]-My[i-1]
+
+
+		maxy = max(My) + fabs(intervalY)*0.5 # Max value for y axis 
+		miny = min(My) - fabs(intervalY)*0.5 # Min value for y axis
+		maxx = max(Mx) + fabs(intervalX)*0.5 # max value for x axis
+		minx = min(Mx) - fabs(intervalX)*0.5 # min value for x axis
 
 		yerr = float(raw_input("The %s's error " %(Yname))) # error for IV
 
@@ -251,13 +276,13 @@ class Straigth(object):
 		fl = open(Path+Title+'.txt','w')
 		for x in xrange(1):
 			fl.write('Los valores medios de X y de Y son:' + "\n")
-			fl.write('\t' + ' <x>= ' + str(medianX()) + 'm y <y>= ' + str(medianY()) + 's'+'\n')
+			fl.write('\t' + ' <x>= %gm y <y>= %gs' %(medianX(), medianY()) +'\n')
 			fl.write('La ecuacion de la recta obtenida por el ajuste por minimos cuadrados es:' + '\n')
-			fl.write('\t' + 'y = ' + str(Straigth().slope()) + 'x + ' + str(Straigth().intercept()) + '\t' + '\t' + 'Error m = ' + str(Straigth().errorslope()) + '\n')
+			fl.write('\t' + 'y = %gx + %g' %(Straigth().slope(), Straigth().intercept())+ '\t' + '\t' + 'Error m = %g' %(Straigth().errorslope()) + '\n')
 		fl.close()
-		print 'Los valores medios de X y de Y son:' + "\n" + "\t" + ' <x>= %sm y <y>= %ss' %(medianX(), medianY())
-		print 'La ecuacion de la recta obtenida por el ajuste por minimos cuadrados es:' + '\n' + '\t' + 'y = %sx + %s' %(Straigth().slope(), Straigth().intercept())
-		print 'EM = %s and EI = %s' %(Straigth().errorslope(), Straigth().ertercept())
+		print 'Los valores medios de X y de Y son:' + "\n" + "\t" + ' <x>= %gm y <y>= %gs' %(medianX(), medianY())
+		print 'La ecuacion de la recta obtenida por el ajuste por minimos cuadrados es:' + '\n' + '\t' + 'y = %gx + %g' %(Straigth().slope(), Straigth().intercept())
+		print 'EM = %g and EI = %g' %(Straigth().errorslope(), Straigth().ertercept())
 
 class Logarithmic(object):
 	sumX = sum(Mx) 
@@ -285,10 +310,21 @@ class Logarithmic(object):
 		for x in xrange(xes.size):
 			yes.append(Logarithmic().slope()*log(xes[x])+Logarithmic().intercept())
 
-		maxy = max(My) + fabs(My[len(My)-1]-My[len(My)-2])*0.5 # Max value for y axis 
-		miny = min(My) - fabs(My[1]-My[0])*0.5 # Min value for y axis
-		maxx = max(Mx) + fabs(Mx[len(Mx)-1]-Mx[len(Mx)-2])*0.5 # max value for x axis
-		minx = min(Mx) - fabs(Mx[1]-Mx[0])*0.5 # min value for x axis
+		i = 1
+		intervalY = My[len(Mx)-i]-My[len(Mx)-i-1]
+		while intervalY == 0:
+			i += 1
+			intervalY = My[len(Mx)-i]-My[len(Mx)-i-1]
+		i = 1
+		intervalX = My[len(Mx)-i]-My[len(Mx)-i-1]
+		while intervalX == 0:
+			i += 1
+			intervalX = My[len(Mx)-i]-My[len(Mx)-i-1]
+
+		maxy = max(My) + fabs(intervalY)*0.5 # Max value for y axis 
+		miny = min(My) - fabs(intervalY)*0.5 # Min value for y axis
+		maxx = max(Mx) + fabs(intervalX)*0.5 # max value for x axis
+		minx = min(Mx) - fabs(intervalX)*0.5 # min value for x axis
 
 		yerr = float(raw_input("The %s's error " %(Yname))) # error for IV
 
@@ -309,11 +345,11 @@ class Logarithmic(object):
 		fl = open(Path+Title+'.txt','w')
 		for x in xrange(1):
 			fl.write('Los valores medios de X y de Y son:' + "\n")
-			fl.write('\t' + ' <x>= ' + str(medianX()) + 'm y <y>= ' + str(medianY()) + 's'+'\n')
+			fl.write('\t' + ' <x>= %g m y <y>= %g s' %(medianX(), medianY())+'\n')
 			fl.write('La ecuacion de la recta obtenida por el ajuste por minimos cuadrados es:' + '\n')
-			fl.write('\t' + 'y = ' + str(Logarithmic().slope()) + '* ln(x) + ' + str(Logarithmic().intercept()) + '\n')
-		print 'Los valores medios de X y de Y son:' + "\n" + "\t" + ' <x>= %sm y <y>= %ss' %(medianX(), medianY())
-		print 'La ecuacion de la curva es:' + '\n' + '\t' + 'y = %s*ln(x) + %s' %(Logarithmic().slope(), Logarithmic().intercept())
+			fl.write('\t' + 'y = %g* ln(x) + %g' %(Logarithmic().slope(), Logarithmic().intercept()) + '\n')
+		print 'Los valores medios de X y de Y son:' + "\n" + "\t" + ' <x>= %gm y <y>= %gs' %(medianX(), medianY())
+		print 'La ecuacion de la curva es:' + '\n' + '\t' + 'y = %g*ln(x) + %g' %(Logarithmic().slope(), Logarithmic().intercept())
 
 class Exponential(object):
 	Mxx = []
@@ -339,10 +375,21 @@ class Exponential(object):
 		for x in xrange(xes.size):
 			yes.append(Exponential().intercept()*exp(Exponential().intercept()*xes[x]))
 
-		maxy = max(My) + fabs(My[len(My)-1]-My[len(My)-2])*0.5 # Max value for y axis 
-		miny = min(My) - fabs(My[1]-My[0])*0.5 # Min value for y axis
-		maxx = max(Mx) + fabs(Mx[len(Mx)-1]-Mx[len(Mx)-2])*0.5 # max value for x axis
-		minx = min(Mx) - fabs(Mx[1]-Mx[0])*0.5 # min value for x axis
+		i = 1
+		intervalY = My[len(Mx)-i]-My[len(Mx)-i-1]
+		while intervalY == 0:
+			i += 1
+			intervalY = My[len(Mx)-i]-My[len(Mx)-i-1]
+		i = 1
+		intervalX = My[len(Mx)-i]-My[len(Mx)-i-1]
+		while intervalX == 0:
+			i += 1
+			intervalX = My[len(Mx)-i]-My[len(Mx)-i-1]
+
+		maxy = max(My) + fabs(intervalY)*0.5 # Max value for y axis 
+		miny = min(My) - fabs(intervalY)*0.5 # Min value for y axis
+		maxx = max(Mx) + fabs(intervalX)*0.5 # max value for x axis
+		minx = min(Mx) - fabs(intervalX)*0.5 # min value for x axis
 
 		yerr = float(raw_input("The %s's error " %(Yname))) # error for IV
 
@@ -363,11 +410,11 @@ class Exponential(object):
 		fl = open(Path+Title+'.txt','w')
 		for x in xrange(1):
 			fl.write('Los valores medios de X y de Y son:' + "\n")
-			fl.write('\t' + ' <x>= ' + str(medianX()) + 'm y <y>= ' + str(medianY()) + 's'+'\n')
+			fl.write('\t' + ' <x>= %g m y <y>= %g s' %(medianX(), medianY())+'\n')
 			fl.write('La ecuacion de la recta obtenida por el ajuste por minimos cuadrados es:' + '\n')
-			fl.write('\t' + 'y = ' + str(Exponential().slope()) + '* ln(x) + ' + str(Exponential().intercept()) + '\n')
-		print 'Los valores medios de X y de Y son:' + "\n" + "\t" + ' <x>= %sm y <y>= %ss' %(medianX(), medianY())
-		print 'La ecuacion de la curva es:' + '\n' + '\t' + 'y = %s*e^(%sx)' %(Exponential().intercept(), Exponential().slope())
+			fl.write('\t' + 'y = %g* ln(x) + %g' %(Exponential().slope(), Exponential().intercept()) + '\n')
+		print 'Los valores medios de X y de Y son:' + "\n" + "\t" + ' <x>= %gm y <y>= %gs' %(medianX(), medianY())
+		print 'La ecuacion de la curva es:' + '\n' + '\t' + 'y = %g*e^(%gx)' %(Exponential().intercept(), Exponential().slope())
 
 ###########################################################
 ##########################################################
@@ -407,11 +454,17 @@ while function != 'close': # loop to select function. if the function es close, 
 	
 	function = str(raw_input('Choose function: ')) # ask again for a function
 
+print ' '
+
 ############################################################
 
-fl = open('./1.csv', 'w') # open and create an .ods file
-for x in xrange(1): # loop to write the file
-	fl.write(Xname+'/'+Xmed+ "\t" + Yname+'/'+Ymed + "\n") # write a header
-	for i in range(len(Mx)): # loop to write element by element to the file
-		fl.write((str(Mx[i]) + "\t" + str(My[i]) + "\n")) # write in two colums
-	fl.close() # close file
+fl = open(Path+Title+'.ods', 'r') # open and read the .ods file created on save() function
+read = fl.readline() # sat the variable red the action to read a line
+while read != '': # loop to write element by element to the file
+	print read # read and print the line
+	read = fl.readline() # read the next line
+fl.close() # close file
+
+raw_input('')
+
+os.system('cls' if os.name == 'nt' else 'clear')
