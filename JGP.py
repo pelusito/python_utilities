@@ -66,7 +66,7 @@ def orderMagnitude(w): # change the order of magnitude to w
 			My[i] = My[i] *(10**(w)) # multiply each element by 10 to w
 
 def frequencyWavelength(): # convert frequency to wavelength or vice versa
-	global Mx # let use Mx variable
+	global Mx, Path # let use Mx variable
 	c = 3*(10**8) # set light speed
 	newMx = [] # new list with DV data
 	for i in xrange(len(Mx)): # loop that go over element by element the DV list
@@ -78,34 +78,65 @@ def frequencyWavelength(): # convert frequency to wavelength or vice versa
 			Mx[i] = Mx[i] *(10**(-9)) # multiply each element by 10 to -9
 		for i in xrange(len(Mx)): # loop that go over element by element the DV list
 			Mx[i] = c / Mx[i] # Convert each element to frequency
-		fl = open(Path+'fequency.ods', 'w') # open and create an .ods file
-		for x in xrange(1): # loop to write the file
-			fl.write(newXname+ "\t" + Xname + '\t' + Yname + "\n") # write a header
-			for i in range(len(Mx)): # loop to write element by element to the file
-				fl.write(('%g' %(Mx[i]) + "\t" + '%g' %(newMx[i]) + '\t' + '%g' %(My[i]) + "\n")) # write in two colums
-			fl.close() # close file
-		fl = open(Path+'LaTexF.txt', 'w') # open and create an .ods file
-		for x in xrange(1): # loop to write the file
-			fl.write(newXname+ ' & ' + Xname + ' & ' + Yname + ' \\'+" \\\hline"+'\n') # write a header
-			for i in range(len(Mx)): # loop to write element by element to the file
-				fl.write(('%g' %(Mx[i]) + ' & ' + '%g' %(newMx[i]) + ' & ' + '%g' %(My[i]) + ' \\'+" \\"+'\n')) # write in two colums
-			fl.close() # close file
+		file = True
+		while file:
+			try:
+				fl = open(Path+'fequency.ods', 'w') # open and create an .ods file
+				for x in xrange(1): # loop to write the file
+					fl.write(newXname+ "\t" + Xname + '\t' + Yname + "\n") # write a header
+					for i in range(len(Mx)): # loop to write element by element to the file
+						fl.write(('%g' %(Mx[i]) + "\t" + '%g' %(newMx[i]) + '\t' + '%g' %(My[i]) + "\n")) # write in two colums
+					fl.close() # close file
+				fl = open(Path+'LaTexF.txt', 'w') # open and create an .ods file
+				for x in xrange(1): # loop to write the file
+					fl.write('\\begin{table}'+'\n')
+					fl.write('\t'+'\\centering'+'\n')
+					fl.write('\t'+'\\begin{tabular}'+'\n')
+					fl.write('\t'+'\t'+ ' \\'+ '\\\hline'+'\n')
+					fl.write('\t'+'\t'+'\\centering'+'\n')
+					fl.write('\t'+'\t'+'\t'+newXname+ ' & ' + Xname + ' & ' + Yname + ' \\'+"\\\hline"+'\n') # write a header
+					for i in range(len(Mx)): # loop to write element by element to the file
+						fl.write(('\t'+'\t'+'\t'+'%g' %(Mx[i]) + ' & ' + '%g' %(newMx[i]) + ' & ' + '%g' %(My[i]) + ' \\'+"\\"+'\n')) # write in two colums
+					fl.write('\t'+'\\end{tabular}'+'\n')
+					fl.write('\t'+'\\caption{\\label{Tab:}}'+'\n')
+					fl.write('\\end{table}'+'\n')
+				fl.close() # close file
+				file = False
+			except NameError:
+				print 'U have not defined where do U want to save the file'
+				new_proyect()
 	else:
 		newname = 'Wavelength/nm'
 		for i in xrange(len(Mx)): # loop that go over element by element the DV list
 			Mx[i] = c / Mx[i] # Convert each element to frequency or wavelength
-		fl = open(Path+'Wavelength.ods', 'w') # open and create an .ods file
-		for x in xrange(1): # loop to write the file
-			fl.write(newname+ "\t" + Xname + '\t' + Yname + "\n") # write a header
-			for i in range(len(Mx)): # loop to write element by element to the file
-				fl.write(('%g' %(Mx[i]) + "\t" + '%g' %(newMx[i])+ '\t' + '%g' %(My[i]) + "\n")) # write in two colums
-			fl.close() # close file
-		fl = open(Path+'LaTexW.txt', 'w') # open and create an .ods file
-		for x in xrange(1): # loop to write the file
-			fl.write(newname+ " & " + Xname + ' & ' + Yname + ' \\'+" \\\hline"+'\n') # write a header
-			for i in range(len(Mx)): # loop to write element by element to the file
-				fl.write(('%g' %(Mx[i]) + " & " + '%g' %(newMx[i])+ ' & ' + '%g' %(My[i]) + ' \\'+" \\"+'\n')) # write in two colums
-			fl.close() # close file
+		file = True
+		while file:
+			try:
+				fl = open(Path+'Wavelength.ods', 'w') # open and create an .ods file
+				for x in xrange(1): # loop to write the file
+					fl.write(newname+ "\t" + Xname + '\t' + Yname + "\n") # write a header
+					for i in range(len(Mx)): # loop to write element by element to the file
+						fl.write(('%g' %(Mx[i]) + "\t" + '%g' %(newMx[i])+ '\t' + '%g' %(My[i]) + "\n")) # write in two colums
+					fl.close() # close file
+				fl = open(Path+'LaTexW.txt', 'w') # open and create an .ods file
+				for x in xrange(1): # loop to write the file
+					fl.write('\\begin{table}'+'\n')
+					fl.write('\t'+'\\centering'+'\n')
+					fl.write('\t'+'\\begin{tabular}'+'\n')
+					fl.write('\t'+'\t'+ ' \\'+ '\\\hline'+'\n')
+					fl.write('\t'+'\t'+'\\centering'+'\n')
+					fl.write(newname+ " & " + Xname + ' & ' + Yname + ' \\'+"\\\hline"+'\n') # write a header
+					for i in range(len(Mx)): # loop to write element by element to the file
+						fl.write(('\t'+'\t'+'\t'+'%g' %(Mx[i]) + " & " + '%g' %(newMx[i])+ ' & ' + '%g' %(My[i]) + ' \\'+"\\"+'\n')) # write in two colums
+					fl.write('\t'+'\\end{tabular}'+'\n')
+					fl.write('\t'+'\\caption{\\label{Tab:}}'+'\n')
+					fl.write('\\end{table}'+'\n')
+				fl.close() # close file
+				file = False
+			except NameError:
+				print 'U have not defined where do U want to save the file'
+				new_proyect()
+				
 
 def save(): # save lists into a .ods archive in /home/jaime/Documentos/Data/ path
 	fl = open(Path+Title+'.ods', 'w') # open and create an .ods file
@@ -117,10 +148,18 @@ def save(): # save lists into a .ods archive in /home/jaime/Documentos/Data/ pat
 
 	fl = open(Path+'LaTex.txt', 'w') # open and create an .ods file
 	for x in xrange(1): # loop to write the file
-		fl.write(Xname + ' & ' + Yname  +' \\'+ '\\\hline'+'\n') # write a header
+		fl.write('\\begin{table}'+'\n')
+		fl.write('\t'+'\\centering'+'\n')
+		fl.write('\t'+'\\begin{tabular}'+'\n')
+		fl.write('\t'+'\t'+ ' \\'+ '\\\hline'+'\n')
+		fl.write('\t'+'\t'+'\\centering'+'\n')
+		fl.write('\t'+'\t'+'\t'+Xname + ' & ' + Yname  +' \\'+ '\\\hline'+'\n') # write a header
 		for i in range(len(Mx)): # loop to write element by element to the file
-			fl.write('%g' %(Mx[i]) + ' & ' + '%g' %(My[i])+ ' \\'+'\\'+'\n') # write in two colums
-		fl.close() # close file
+			fl.write('\t'+'\t'+'\t'+'%g' %(Mx[i]) + ' & ' + '%g' %(My[i])+ ' \\'+'\\'+'\n') # write in two colums
+		fl.write('\t'+'\\end{tabular}'+'\n')
+		fl.write('\t'+'\\caption{\\label{Tab:}}'+'\n')
+		fl.write('\\end{table}'+'\n')
+	fl.close() # close file
 
 def graph(): # print the graph
 	i = 1
@@ -155,6 +194,14 @@ def medianX(): # return the mean of DV
 def medianY(): # return the mean of IV
 	return sum(My) / len(My)
 
+def new_proyect():
+	Title = str(raw_input('Title: ')) # Introduce the title of the practice
+	Path = './Escritorio/Python/'+Title+'/'
+	dir = os.path.dirname(Path)
+	if not os.path.exists(Path):
+		os.makedirs(Path)
+	return Path
+
 ############################################################
 ############################################################
 
@@ -167,20 +214,19 @@ print ' ' # blank space
 while function != 'close': # loop to select function. if the function es close, stop the program
 
 	if function == 'New Proyect' or function == 'new proyect' or function == 'New proyect': # start a new proyect
-		Title = str(raw_input('Title: ')) # Introduce the title of the practice
-		Path = './Escritorio/Python/'+Title+'/'
-		dir = os.path.dirname(Path)
-		if not os.path.exists(Path):
-			os.makedirs(Path)
+		new_proyect()
 
 	elif function == 'Open file' or function == 'open file' or function == 'Open File': # get the data from a file
 		Mx = [] # inicialize DV data list
 		My = [] # inicialize IV data list
-		nameData = raw_input('File directory: ') # introduce directory name
-		while not os.path.exists(nameData):  # check if that directory exists
-			print 'Sorry that directory does not exist' # if it is not, print an error message
-			nameData = raw_input('File directory: ')  # introduce the correct directory name
-		fl = open(nameData,'r') # open file as read
+		directory = True
+		while directory:
+			try:
+				nameData = raw_input('File directory: ') # introduce directory name
+				fl = open(nameData,'r') # open file as read
+				directory = False
+			except IOError:
+					print 'Sorry that directory does not exist or no able to treated as file' # if it is not, print an error message
 		Titles = fl.readline().split( ) # list with the 2 titles
 		Xname = Titles[0] # DV title
 		Yname = Titles[1] # IV title
@@ -245,7 +291,7 @@ while function != 'close': # loop to select function. if the function es close, 
 						number = True # stop the loop of the exception
 					except ValueError:
 						print 'Sorry, the value is not a float'
-						x = (raw_input('%s x = ' %(samplex))) # introduce a new value
+						y = (raw_input('%s y = ' %(sampley))) # introduce a new value
 				sampley += 1 # plus another sample
 		while len(Mx) != len(My): # check if there r the same number of data in DV's list than in IV's one
 			if len(Mx) >= len(My): # More data from DV
@@ -266,7 +312,13 @@ while function != 'close': # loop to select function. if the function es close, 
 	####################################################################################
 
 	elif function == 'Order of Magnitude' or function == 'order of magnitude' or function == 'Order of magnitude' or function == 'order of Magnitude' :
-		q = float(raw_input('Order??')) # ask the order of Magnitude
+		Order = True
+		while Order:
+			try:
+				q = float(raw_input('Order??')) # ask the order of Magnitude
+				Order = False
+			except ValueError:
+				print 'Sorry but that has not been a number'
 		orderMagnitude(q) # ejecute orderMagnitude() function with q argument
 	
 	elif function == 'Frequency to Wavelength' or function == 'frequency to Wavelength' or function == 'Frequency to wavelength' or function == 'frequency to wavelength':
