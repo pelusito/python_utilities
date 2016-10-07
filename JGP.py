@@ -493,7 +493,7 @@ def save(): # save lists into a .csv archive in /home/jaime/Documentos/Data/ pat
 
 	fl = open(Path+'LaTex.txt', 'w') # open and create an .ods file
 	for x in xrange(1): # loop to write the file
-		fl.write('\\begin{table}'+'\n')
+		fl.write('\\begin{table}[H]'+'\n')
 		fl.write('\t'+'\\centering'+'\n')
 		line = '\t'+'\\begin{tabular}{ '
 		for i in range(len(allData)):
