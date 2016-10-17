@@ -1,4 +1,6 @@
-# python_utilities
+Python_utilities
+=============================
+
 Utilities for newbies done by a bunch of newbies
 Hope someone finds it useful
 
@@ -6,7 +8,7 @@ Hope someone finds it useful
 
   A simple technical graphing and data analysis program developed in order to facilitate operations in performing laboratory practice using python packages as numpy and matplotlib.pyplot
   
-  ![alt text](https://github.com/Jaimedgp/python_utilities/blob/Tests/old-versions/Sin%20t%C3%ADtulo.png "Logo Title Text 1")
+  ![alt text](old-versions/Sin%20t%C3%ADtulo.png "Logo Title Text 1")
 
 # 2LaTex
 
@@ -14,7 +16,7 @@ Hope someone finds it useful
   
 ## Requisites
   
->* [Python 2.7](https://www.python.org/download/releases/2.7/) | 3.4 is not compatible.
+>* [Python 2.7](https://www.python.org/download/releases/2.7/) || 3.4 is not compatible.
 >* dksldkslkdlskd
 >* lskdfjlsdkjfijij
 
@@ -31,9 +33,10 @@ git clone https://github.com/Jaimedgp/python_utilities/python_utilities/2LaTex.p
 2. Choose a PATH
  
   Open the 2LaTex.py file and go to the line 76 
-  ```tex
+  ```python
   Path = './Desktop/Python/'+Title+'/' # Directory wherever all document will be saved
   ```
+  
   and write a Path of destinity to the tex code of the table. It would be save at that directory as LaTex.tex file.
   
 ## User's guide for 2LaTex
