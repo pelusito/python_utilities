@@ -13,7 +13,7 @@ Hope someone finds it useful
 ## Requisites
   
 >* [Python 2.7](https://www.python.org/download/releases/2.7/) || 3.4 is not compatible.
->* Numpy || You could dowload [Anaconda](https://www.continuum.io/downloads) which provides it
+>* Numpy || You could download [Anaconda](https://www.continuum.io/downloads) which provides it
 >* lskdfjlsdkjfijij
 
 ## Installation
