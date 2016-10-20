@@ -1,4 +1,5 @@
-#esto es una prueba del uso de la terminal
+# esto es una prueba del uso de la terminal
+# otra prueba mas
 
 
 nombre = raw_input("¿Cual es tu nombre?")
