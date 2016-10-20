@@ -1,3 +1,6 @@
+#esto es una prueba del uso de la terminal
+
+
 nombre = raw_input("¿Cual es tu nombre?")
 mision = raw_input("¿cual es tu mision en la vida?")
 Color = raw_input("¿Cual es tu color favorito?")
