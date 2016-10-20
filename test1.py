@@ -12,3 +12,5 @@ fl = open('prueba.ods','w')
 for i in range(1000):
     fl.write(nombre+"\t"+mision+"\t"+Color+"\n")
 fl.close()
+#test
+
