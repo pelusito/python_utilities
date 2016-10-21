@@ -414,7 +414,7 @@ class Modify_Table():
 ###########              FUNCTIONS              #############
 #############################################################
 
-def new_proyect(): # Create a new proyect
+def new_project(): # Create a new proyect
 	Title = str(raw_input('Title: ')) # Introduce the title of the practice
 	Path = './Desktop/Python/'+Title+'/' # Directory wherever all document will be saved
 		# if the directory does not exist, it will create it 
@@ -585,9 +585,9 @@ function = str(raw_input('Choose function: ')) # select one function
 while function != 'close': # loop to select function. if the close, stop the program
 
 	try:
-		if function == 'New Proyect' or function == 'new proyect' or function == 'New proyect': # start a new proyect
-			Proyect = new_proyect() # new proyect
-			Title = Proyect[1] # proyect name
+		if function == 'New Proyect' or function == 'new project' or function == 'New proyect': # start a new proyect
+			Proyect = new_project() # new proyect
+			Title = Proyect[1] # project name
 			Path = Proyect[0] # directory Path
 			allData = [] # inicialize the Data list
 			print_screen()
@@ -607,7 +607,7 @@ while function != 'close': # loop to select function. if the close, stop the pro
 					addcol = str(raw_input('add a Column '))
 				print_screen()
 			except NameError:
-				print 'First create a new proyect'
+				print 'First create a new project'
 
 		elif function == 'Graph' or function == 'graph': # print the graph
 			x = int(raw_input('Dependent variable column: '))
