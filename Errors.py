@@ -1,6 +1,5 @@
 from sympy import *
 from math import sqrt
-import string
 
 class Errores(object):
 	
@@ -17,15 +16,8 @@ class Errores(object):
 		Error_sq = 0
 		for i in range(len(self.variables)):
 			Error_sq += ((self.f.diff(self.variables[i])*self.errors[i])**2)
-		Error_sq = str(Error_sq)
-		Error_sq = string.replace(Error_sq, 'x', str(self.values[0]))
-		Error_sq = string.replace(Error_sq, 'y', str(self.values[1]))
-		print eval(Error_sq)
-
-		_Error_sq = eval(str(Error_sq))	
-		print _Error_sq
-
-		Error = sqrt(_Error_sq)
+		Error_sq = Error_sq.evalf(subs={self.variables[0]:self.values[0], self.variables[1]: self.values[1]})
+		Error = sqrt(Error_sq)
 		return Error
 
 print Errores().Errors()

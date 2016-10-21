@@ -12,7 +12,7 @@ for i in range(len(h)):
 
 fl = open('C:\Users\jaime\Desktop\Inercia\sabla.csv', 'w') # open and create an .ods file
 for x in xrange(1): # loop to write the file
-	fl.write('title 1' + '\t' + 'title 2' + '\t' + 'title 2'+ '\t' + 'title 3' + "\n") # write a header
+	fl.write('Altura/cm' + '\t' + 'cateto/cm' + '\t' + 'alpha/rad'+ '\t' + 'alpha/' + "\n") # write a header
 	for i in range(len(h)): # loop to write element by element to the file
 		fl.write(str(h[i]) + "\t"+ str(hA[i]) + "\t" + str(alpha[i])+ "\t" + str(alphag[i])+ "\n") # write in two colums
 fl.close() # close file
