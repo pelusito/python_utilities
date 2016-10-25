@@ -1,5 +1,4 @@
 from sympy import *
-from math import sqrt, sin, cos, fabs, log, exp
 
 class Errores(object):
 
