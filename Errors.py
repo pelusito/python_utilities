@@ -1,23 +1,32 @@
 from sympy import *
-from math import sqrt
+from math import sqrt, sin, cos, fabs, log, exp
 
 class Errores(object):
-	
+
 	def __init__(self):
-		x = Symbol('x')
-		y = Symbol('y')
-		self.f = eval(raw_input('funcion: '))
-		self.variables = [x, y]
-		self.values = [4,5]
-		self.errors = [2,1]
+		self.variables = raw_input('Variables: ')
+		self.variables = self.variables.split(' ')
+		S = symbols(self.variables)
+		self.values = eval(raw_input('Valores: '))
+		self.errors = eval(raw_input('Errores: '))
+		self.f = str(raw_input('funcion: '))
+		for n in range(len(S)):
+			selement = 'S['+str(n)+']'
+			self.f = self.f.replace(self.variables[n], selement)
+		print self.f
+		self.f = eval(self.f)
 
 	def Errors(self):
 
 		Error_sq = 0
 		for i in range(len(self.variables)):
 			Error_sq += ((self.f.diff(self.variables[i])*self.errors[i])**2)
-		Error_sq = Error_sq.evalf(subs={self.variables[0]:self.values[0], self.variables[1]: self.values[1]})
-		Error = sqrt(Error_sq)
+		Error_re = 'Error_sq.evalf(subs={self.variables[0]:self.values[0]'
+		for x in range(1,len(self.variables)):
+			Error_re += ', self.variables['+ str(x) + ']:self.values[' + str(x) + ']'
+		Error_re += '})'
+		Error_re = eval(Error_re)
+		Error = sqrt(Error_re)
 		return Error
 
 print Errores().Errors()
